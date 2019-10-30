@@ -1,10 +1,8 @@
-// See http://www.cookiecentral.com/faq/#3.5
 var content = "";
 var downloadable = "";
-var popup = "";
+
 chrome.tabs.getSelected(null, function(tab) {
   domain = getDomain(tab.url)  
-  //console.log("domain=["+domain+"]")
   chrome.cookies.getAll({}, function(cookies) {
     for (var i in cookies) {
       cookie = cookies[i]; 
@@ -31,15 +29,12 @@ chrome.tabs.getSelected(null, function(tab) {
     downloadable += "#\n"; 
 
     var uri = "data:application/octet-stream;base64,"+btoa(downloadable + content);
-    var a = '<a href='+ uri +' download="cookies.txt">downloaded</a>';
 
-    popup += "# HTTP Cookie File for domains related to <b>" + escapeForPre(domain) + "</b>.\n";
-    popup += "# This content may be "+ a +" or pasted into a cookies.txt file and used by wget\n";
-    popup += "# Example:  wget -x <b>--load-cookies cookies.txt</b> " + escapeForPre(tab.url) + "\n"; 
-    popup += "#\n";
-
-    document.write("<pre>\n"+ popup + content + "</pre>");
-  });      
+    chrome.downloads.download({
+      "url": uri,
+      "filename": domain + "-cookies.txt"
+    })
+  });
 })
 
 function escapeForPre(text) {
@@ -51,14 +46,10 @@ function escapeForPre(text) {
 }
 
 function getDomain(url) {
-  //console.log("url=["+url+"]")
   server = url.match(/:\/\/(.[^/:#?]+)/)[1];
-  //console.log("server=["+server+"]")
   parts = server.split(".");
-  //console.log("parts=["+parts+"]")
 
   isip = !isNaN(parseInt(server.replace(".",""),10));
-  //console.log("parts=["+isip+"]")
 
   if (parts.length <= 1 || isip)   {
     domain = server;
@@ -66,15 +57,11 @@ function getDomain(url) {
   else   {
     //search second level domain suffixes
     var domains = new Array();
-    domains[0] = parts[parts.length-1];
-    //assert(parts.length > 1)
-    for(i=1;i<parts.length;i++)     {
+    domains[0] = parts[parts.length - 1];
+    for(i = 1; i < parts.length; i++) {
       domains[i] = parts[parts.length-i-1] + "." + domains[i-1];
-      //console.log("domains=["+domains[i]+"]");
-      //domainlist defines in domain_list.js 
       if (!domainlist.hasOwnProperty(domains[i])) {
         domain = domains[i];
-        //console.log("found "+domain);
         break;
       }
     }
