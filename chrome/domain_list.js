@@ -1,4 +1,4 @@
-var domainlist = {
+export default {
 	"ac":1,
 	"com.ac":1,
 	"edu.ac":1,
@@ -7833,4 +7833,4 @@ var domainlist = {
 	"yolasite.com":1,
 	"za.net":1,
 	"za.org":1
-};
+}

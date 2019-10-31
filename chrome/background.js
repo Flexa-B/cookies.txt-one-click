@@ -1,11 +1,16 @@
-var content = "";
-var downloadable = "";
+import domainlist from "./domain_list.js";
 
-chrome.tabs.getSelected(null, function(tab) {
-  domain = getDomain(tab.url)  
+chrome.browserAction.onClicked.addListener(function(tab) {
+  let content = "";
+  let downloadable = "";
+
+  console.log("ThisIsATest");
+
+  let domain = getDomain(tab.url);
+
   chrome.cookies.getAll({}, function(cookies) {
     for (var i in cookies) {
-      cookie = cookies[i]; 
+      let cookie = cookies[i]; 
       if (cookie.domain.indexOf(domain) != -1) {     
         content += escapeForPre(cookie.domain);
         content += "\t";
@@ -29,14 +34,14 @@ chrome.tabs.getSelected(null, function(tab) {
     downloadable += "# Example:  wget -x --load-cookies cookies.txt " + escapeForPre(tab.url) + "\n"; 
     downloadable += "#\n"; 
 
-    var uri = "data:application/octet-stream;base64,"+btoa(downloadable + content);
+    let uri = "data:application/octet-stream;base64,"+btoa(downloadable + content);
 
     chrome.downloads.download({
       "url": uri,
       "filename": domain + "-cookies.txt"
-    })
+    });
   });
-})
+});
 
 function escapeForPre(text) {
   return String(text).replace(/&/g, "&amp;")
@@ -47,19 +52,20 @@ function escapeForPre(text) {
 }
 
 function getDomain(url) {
-  server = url.match(/:\/\/(.[^/:#?]+)/)[1];
-  parts = server.split(".");
+  let server = url.match(/:\/\/(.[^/:#?]+)/)[1];
+  let parts = server.split(".");
+  let domain = "";
 
-  isip = !isNaN(parseInt(server.replace(".",""),10));
+  let isip = !isNaN(parseInt(server.replace(".",""),10));
 
   if (parts.length <= 1 || isip)   {
     domain = server;
   }
   else   {
     //search second level domain suffixes
-    var domains = new Array();
+    let domains = new Array();
     domains[0] = parts[parts.length - 1];
-    for(i = 1; i < parts.length; i++) {
+    for(let i = 1; i < parts.length; i++) {
       domains[i] = parts[parts.length-i-1] + "." + domains[i-1];
       if (!domainlist.hasOwnProperty(domains[i])) {
         domain = domains[i];
