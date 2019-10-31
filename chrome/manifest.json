@@ -6,7 +6,7 @@
   "short_name": "cookies",
   "offline_enabled": true,
     
-  "permissions": [ "activeTab", "downloads", "cookies", "tabs", "http://*/*", "https://*/*"],
+  "permissions": [ "activeTab", "downloads", "cookies", "http://*/*", "https://*/*"],
   
   "browser_action": {
     "default_title": "Export cookies.txt",
