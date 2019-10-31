@@ -7,22 +7,23 @@ chrome.tabs.getSelected(null, function(tab) {
     for (var i in cookies) {
       cookie = cookies[i]; 
       if (cookie.domain.indexOf(domain) != -1) {     
-      content += escapeForPre(cookie.domain);
-      content += "\t";
-      content += escapeForPre((!cookie.hostOnly).toString().toUpperCase());
-      content += "\t";     
-      content += escapeForPre(cookie.path); 
-      content += "\t";     
-      content += escapeForPre(cookie.secure.toString().toUpperCase());
-      content += "\t";     
-      content += escapeForPre(cookie.expirationDate ? Math.round(cookie.expirationDate) : "0");
-      content += "\t";     
-      content += escapeForPre(cookie.name);
-      content += "\t";     
-      content += escapeForPre(cookie.value);
-      content += "\n";
+        content += escapeForPre(cookie.domain);
+        content += "\t";
+        content += escapeForPre((!cookie.hostOnly).toString().toUpperCase());
+        content += "\t";     
+        content += escapeForPre(cookie.path); 
+        content += "\t";     
+        content += escapeForPre(cookie.secure.toString().toUpperCase());
+        content += "\t";     
+        content += escapeForPre(cookie.expirationDate ? Math.round(cookie.expirationDate) : "0");
+        content += "\t";     
+        content += escapeForPre(cookie.name);
+        content += "\t";     
+        content += escapeForPre(cookie.value);
+        content += "\n";
       }
     }
+    
     downloadable += "# HTTP Cookie File for domains related to " + escapeForPre(domain) + ".\n";
     downloadable += "# Downloaded with cookies.txt Chrome Extension (" + escapeForPre("https://chrome.google.com/webstore/detail/njabckikapfpffapmjgojcnbfjonfjfg") + ")\n";
     downloadable += "# Example:  wget -x --load-cookies cookies.txt " + escapeForPre(tab.url) + "\n"; 
