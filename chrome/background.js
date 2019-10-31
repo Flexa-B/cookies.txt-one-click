@@ -4,8 +4,6 @@ chrome.browserAction.onClicked.addListener(function(tab) {
   let content = "";
   let downloadable = "";
 
-  console.log("ThisIsATest");
-
   let domain = getDomain(tab.url);
 
   chrome.cookies.getAll({}, function(cookies) {
@@ -15,26 +13,26 @@ chrome.browserAction.onClicked.addListener(function(tab) {
         content += escapeForPre(cookie.domain);
         content += "\t";
         content += escapeForPre((!cookie.hostOnly).toString().toUpperCase());
-        content += "\t";     
+        content += "\t";
         content += escapeForPre(cookie.path); 
-        content += "\t";     
+        content += "\t";
         content += escapeForPre(cookie.secure.toString().toUpperCase());
-        content += "\t";     
+        content += "\t";
         content += escapeForPre(cookie.expirationDate ? Math.round(cookie.expirationDate) : "0");
-        content += "\t";     
+        content += "\t";
         content += escapeForPre(cookie.name);
-        content += "\t";     
+        content += "\t";
         content += escapeForPre(cookie.value);
         content += "\n";
       }
     }
     
     downloadable += "# HTTP Cookie File for domains related to " + escapeForPre(domain) + ".\n";
-    downloadable += "# Downloaded with cookies.txt Chrome Extension (" + escapeForPre("https://chrome.google.com/webstore/detail/njabckikapfpffapmjgojcnbfjonfjfg") + ")\n";
-    downloadable += "# Example:  wget -x --load-cookies cookies.txt " + escapeForPre(tab.url) + "\n"; 
-    downloadable += "#\n"; 
+    downloadable += "# Downloaded with cookies.txt One Click Chrome Extension (" + escapeForPre("https://chrome.google.com/webstore/detail/pneebejkjkhadolkdpiigilcjcnopkog") + ")\n";
+    downloadable += "# Example:  wget -x --load-cookies cookies.txt " + escapeForPre(tab.url) + "\n";
+    downloadable += "#\n";
 
-    let uri = "data:application/octet-stream;base64,"+btoa(downloadable + content);
+    let uri = "data:application/octet-stream;base64," + btoa(downloadable + content);
 
     chrome.downloads.download({
       "url": uri,
@@ -56,24 +54,24 @@ function getDomain(url) {
   let parts = server.split(".");
   let domain = "";
 
-  let isip = !isNaN(parseInt(server.replace(".",""),10));
+  let isIp = !isNaN(parseInt(server.replace(".",""), 10));
 
-  if (parts.length <= 1 || isip)   {
+  if (parts.length <= 1 || isIp) {
     domain = server;
   }
-  else   {
+  else {
     //search second level domain suffixes
     let domains = new Array();
     domains[0] = parts[parts.length - 1];
     for(let i = 1; i < parts.length; i++) {
-      domains[i] = parts[parts.length-i-1] + "." + domains[i-1];
+      domains[i] = parts[parts.length - i - 1] + "." + domains[i - 1];
       if (!domainlist.hasOwnProperty(domains[i])) {
         domain = domains[i];
         break;
       }
     }
 
-    if (typeof(domain) == "undefined") { 
+    if (typeof(domain) == "undefined") {
       domain = server;
     }
   }
