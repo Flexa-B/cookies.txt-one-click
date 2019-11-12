@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "cookies.txt One Click",
-  "version": "1.1",
+  "version": "1.11",
   "description": "Based off cookies.txt at https://chrome.google.com/webstore/detail/cookiestxt/njabckikapfpffapmjgojcnbfjonfjfg?hl=en",
   "short_name": "cookiesOC",
     
