@@ -4,7 +4,9 @@ allows wget to continue a possibly authenticated session that was
 started in Firefox / Chrome.
 
 The extension can be downloaded for **free**
+
 [Firefox Add-Ons][1]
+
 [Google Chrome WebStore][2]
 
 [1]: https://addons.mozilla.org/en-US/firefox/addon/cookies-txt-one-click/
