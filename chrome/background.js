@@ -1,41 +1,43 @@
 import domainlist from "./domain_list.js";
 
 chrome.browserAction.onClicked.addListener(function(tab) {
-  let content = "";
-  let downloadable = "";
+  let content = [];
 
   let domain = getDomain(tab.url);
 
   chrome.cookies.getAll({}, function(cookies) {
-    for (var i in cookies) {
+    for (let i in cookies) {
       let cookie = cookies[i]; 
       if (cookie.domain.indexOf(domain) != -1) {     
-        content += escapeForPre(cookie.domain);
-        content += "\t";
-        content += escapeForPre((!cookie.hostOnly).toString().toUpperCase());
-        content += "\t";
-        content += escapeForPre(cookie.path); 
-        content += "\t";
-        content += escapeForPre(cookie.secure.toString().toUpperCase());
-        content += "\t";
-        content += escapeForPre(cookie.expirationDate ? Math.round(cookie.expirationDate) : "0");
-        content += "\t";
-        content += escapeForPre(cookie.name);
-        content += "\t";
-        content += escapeForPre(cookie.value);
-        content += "\n";
+        content.push(escapeForPre(cookie.domain));
+        content.push("\t");
+        content.push(escapeForPre((!cookie.hostOnly).toString().toUpperCase()));
+        content.push("\t");
+        content.push(escapeForPre(cookie.path)); 
+        content.push("\t");
+        content.push(escapeForPre(cookie.secure.toString().toUpperCase()));
+        content.push("\t");
+        content.push(escapeForPre(cookie.expirationDate ? Math.round(cookie.expirationDate) : "0"));
+        content.push("\t");
+        content.push(escapeForPre(cookie.name));
+        content.push("\t");
+        content.push(escapeForPre(cookie.value));
+        content.push("\n");
       }
     }
     
-    downloadable += "# HTTP Cookie File for domains related to " + escapeForPre(domain) + ".\n";
-    downloadable += "# Downloaded with cookies.txt One Click Chrome Extension (" + escapeForPre("https://chrome.google.com/webstore/detail/pneebejkjkhadolkdpiigilcjcnopkog") + ")\n";
-    downloadable += "# Example:  wget -x --load-cookies cookies.txt " + escapeForPre(tab.url) + "\n";
-    downloadable += "#\n";
+    let header = [
+      "# HTTP Cookie File for domains related to " + escapeForPre(domain) + ".\n",
+      "# Downloaded with cookies.txt One Click Firefox Extension (" + escapeForPre("https://chrome.google.com/webstore/detail/pneebejkjkhadolkdpiigilcjcnopkog") + ")\n",
+      "# Example:  wget -x --load-cookies cookies.txt " + escapeForPre(tab.url) + "\n",
+      "#\n"
+    ];
 
-    let uri = "data:application/octet-stream;base64," + btoa(downloadable + content);
+    let blob = new Blob(header.concat(content), {type: 'text/plain'});
+    let objectURL = URL.createObjectURL(blob);
 
     chrome.downloads.download({
-      "url": uri,
+      "url": objectURL,
       "filename": domain + "-cookies.txt"
     });
   });

@@ -6,7 +6,7 @@ browser.browserAction.onClicked.addListener(function(tab) {
   let domain = getDomain(tab.url);
 
   browser.cookies.getAll({}, function(cookies) {
-    for (var i in cookies) {
+    for (let i in cookies) {
       let cookie = cookies[i]; 
       if (cookie.domain.indexOf(domain) != -1) {     
         content.push(escapeForPre(cookie.domain));
@@ -26,15 +26,15 @@ browser.browserAction.onClicked.addListener(function(tab) {
       }
     }
     
-    var header = [
+    let header = [
       "# HTTP Cookie File for domains related to " + escapeForPre(domain) + ".\n",
       "# Downloaded with cookies.txt One Click Firefox Extension (" + escapeForPre("https://chrome.google.com/webstore/detail/pneebejkjkhadolkdpiigilcjcnopkog") + ")\n",
       "# Example:  wget -x --load-cookies cookies.txt " + escapeForPre(tab.url) + "\n",
       "#\n"
     ];
 
-    var blob = new Blob(header.concat(content), {type: 'text/plain'});
-    var objectURL = URL.createObjectURL(blob);
+    let blob = new Blob(header.concat(content), {type: 'text/plain'});
+    let objectURL = URL.createObjectURL(blob);
 
     browser.downloads.download({
       "url": objectURL,
