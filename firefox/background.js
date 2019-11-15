@@ -28,7 +28,7 @@ browser.browserAction.onClicked.addListener(function(tab) {
     
     let header = [
       "# HTTP Cookie File for domains related to " + escapeForPre(domain) + ".\n",
-      "# Downloaded with cookies.txt One Click Firefox Extension (" + escapeForPre("https://chrome.google.com/webstore/detail/pneebejkjkhadolkdpiigilcjcnopkog") + ")\n",
+      "# Downloaded with cookies.txt One Click Firefox Extension (" + escapeForPre("https://addons.mozilla.org/en-US/firefox/addon/cookies-txt-one-click/") + ")\n",
       "# Example:  wget -x --load-cookies cookies.txt " + escapeForPre(tab.url) + "\n",
       "#\n"
     ];
