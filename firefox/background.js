@@ -36,19 +36,18 @@ browser.browserAction.onClicked.addListener(function(tab) {
     let blob = new Blob(header.concat(content), {type: 'text/plain'});
     let objectURL = URL.createObjectURL(blob);
 
-    browser.storage.local.get("overwrite")
-      .then(function(item) {
-        let downloadOptions = {
-          "url": objectURL,
-          "filename": domain + "-cookies.txt"
-        };
+    browser.storage.local.get("overwrite").then(function(item) {
+      let downloadOptions = {
+        "url": objectURL,
+        "filename": domain + "-cookies.txt"
+      };
 
-        if(item.overwrite) {
-          downloadOptions["conflictAction"] = "overwrite"
-        }
+      if(item.overwrite) {
+        downloadOptions["conflictAction"] = "overwrite"
+      }
 
-        browser.downloads.download(downloadOptions)
-      })
+      browser.downloads.download(downloadOptions)
+    });
   });
 });
 

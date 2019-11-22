@@ -1,12 +1,6 @@
-function setCheckboxChecked(item) {
+chrome.storage.local.get(["overwrite"], function(item) {
   document.getElementById("overwrite").checked = item.overwrite;
-}
-  
-function onError(error) {
-  console.log(error)
-}
-  
-chrome.storage.local.get(["overwrite"], setCheckboxChecked)
+})
 
 document.getElementById("overwrite").addEventListener("change", (event) => {
   if (event.target.checked) {
