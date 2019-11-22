@@ -36,9 +36,17 @@ chrome.browserAction.onClicked.addListener(function(tab) {
     let blob = new Blob(header.concat(content), {type: 'text/plain'});
     let objectURL = URL.createObjectURL(blob);
 
-    chrome.downloads.download({
-      "url": objectURL,
-      "filename": domain + "-cookies.txt"
+    chrome.storage.local.get(["overwrite"], function(item) {
+      let downloadOptions = {
+        "url": objectURL,
+        "filename": domain + "-cookies.txt"
+      };
+
+      if(item.overwrite) {
+        downloadOptions["conflictAction"] = "overwrite"
+      }
+
+      chrome.downloads.download(downloadOptions)
     });
   });
 });

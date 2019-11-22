@@ -1,12 +1,12 @@
 {
   "manifest_version": 2,
   "name": "cookies.txt One Click",
-  "version": "2.0",
+  "version": "3.0",
   "description": "Based off cookies.txt at https://chrome.google.com/webstore/detail/njabckikapfpffapmjgojcnbfjonfjfg",
   "short_name": "cookiesOC",
-    
-  "permissions": [ "activeTab", "downloads", "cookies", "http://*/*", "https://*/*"],
-  
+
+  "permissions": [ "activeTab", "downloads", "storage", "cookies", "http://*/*", "https://*/*"],
+
   "browser_action": {
     "default_title": "Export cookies.txt",
     "default_icon": "icon.png"
@@ -14,5 +14,15 @@
 
   "background": {
     "page": "background.html"
+  },
+
+  "options_ui": {
+    "page": "options.html"
+  },
+
+  "applications": {
+    "gecko": {
+      "id": "oneclick@cookies.com"
+    }
   }
 }
